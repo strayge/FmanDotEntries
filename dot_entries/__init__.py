@@ -2,6 +2,7 @@ from fman import DirectoryPaneListener
 from fman.url import normalize
 from fman.impl.model.model import Model, transaction
 from fman.url import join
+import re
 
 
 @transaction(priority=1)
@@ -95,13 +96,18 @@ Model.reload = reload_
 
 class DottedPaneListener(DirectoryPaneListener):
     def before_location_change(self, url, sort_column='', ascending=True):
-        if url.endswith('/..'):
-            url = normalize(url)
-            if url == 'file://':
-                url = 'file:///'
-            if url.endswith('/..'):
-                url = url[:-2]
+        if not url.endswith('/..'):
+            return
+        # normalize works weird with "C://.."
+        if re.match(r'file://\w:\/\.\.', url):
+            url = url[:-2]
             return url, sort_column, ascending
+        url = normalize(url)
+        if url == 'file://':
+            url = 'file:///'
+        if url.endswith('/..'):
+            url = url[:-2]
+        return url, sort_column, ascending
 
 
 from core import commands
@@ -111,7 +117,6 @@ _hidden_file_filter_orig = commands._hidden_file_filter
 def _hidden_file_filter(url):
     if url.endswith('/..'):
         return True
-    print(url)
     return _hidden_file_filter_orig(url)
 
 commands._hidden_file_filter = _hidden_file_filter
