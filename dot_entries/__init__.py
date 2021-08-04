@@ -7,7 +7,11 @@ import re
 
 @transaction(priority=1)
 def _init(self, callback):
-    files = [self._init_file(join(self._location, '..'))]
+    files = []
+    try:
+        files.append(self._init_file(join(self._location, '..')))
+    except FileNotFoundError:
+        pass
     try:
         file_names = iter(self._fs.iterdir(self._location))
     except FileNotFoundError:
@@ -52,7 +56,11 @@ def _init(self, callback):
 @transaction(priority=5)
 def reload_(self):
     self._fs.clear_cache(self._location)
-    files = [self._init_file(join(self._location, '..'))]
+    files = []
+    try:
+        files.append(self._init_file(join(self._location, '..')))
+    except FileNotFoundError:
+        pass
     try:
         file_names = iter(self._fs.iterdir(self._location))
     except FileNotFoundError:
