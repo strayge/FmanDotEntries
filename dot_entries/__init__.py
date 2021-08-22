@@ -128,3 +128,16 @@ def _hidden_file_filter(url):
     return _hidden_file_filter_orig(url)
 
 commands._hidden_file_filter = _hidden_file_filter
+
+
+# always on top with any sort
+from fman.impl.model.sorted_table import SortFilterTableModel
+
+orig_sort = SortFilterTableModel._sorted
+
+def custom_sort(self, rows):
+    result = orig_sort(self, rows)
+    result = sorted(result, key=lambda x: x.key.endswith('/..'), reverse=True)
+    return result
+
+SortFilterTableModel._sorted = custom_sort

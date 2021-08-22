@@ -11,6 +11,6 @@ Clicking on the double-dot entry will get you to the parent folder
 ## Screenshot - Showing the plugin in action
 ![Showing the plugin in action](https://user-images.githubusercontent.com/1760091/129909288-eb472753-1060-4a6b-8b07-2480ee76392e.jpg)  
 
-## Disclaimer
+#### Disclaimer
 The theme in the last screenshot was changed using [Fman Alternative Colors](https://github.com/strayge/FmanAlternativeColors) plugin  
 The bottom menu was created using [Fman Action Bar](https://github.com/strayge/FmanActionBar) plugin  
